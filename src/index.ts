@@ -16,9 +16,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 async function getAllData() {
   try {
     // Fetch all rooms
-    const { data: rooms, error: roomsError } = await supabase
-      .from('rooms')
-      .select('*');
+    const { data: rooms, error: roomsError } = await supabase.from('rooms').select('*');
 
     if (roomsError) throw roomsError;
     if (!rooms) throw new Error('No rooms found');
@@ -35,8 +33,8 @@ async function getAllData() {
     const roomsWithCharacters: RoomWithCharacters[] = rooms.map((room: Room) => ({
       ...room,
       characters: room.character_ids
-        .map(id => characters.find((char: Character) => char.id === id))
-        .filter((char): char is Character => char !== undefined)
+        .map((id) => characters.find((char: Character) => char.id === id))
+        .filter((char): char is Character => char !== undefined),
     }));
 
     // Print the results
@@ -49,7 +47,6 @@ async function getAllData() {
       });
       console.log('\n-------------------\n');
     });
-
   } catch (error) {
     console.error('Error fetching data:', error);
   }
